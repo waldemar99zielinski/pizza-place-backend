@@ -1,29 +1,22 @@
 const express = require("express");
 const cors = require("cors");
-const { Pool, Client } = require("pg");
 const app = express();
+
+//routers
+const pizzaRouter = require("./routes/pizzas");
 
 app.use(cors());
 
-const pool = new Pool({
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  port: process.env.PGPORT,
-});
+const apiRoute = "/api/v1";
 
-// pool.query("SELECT NOW()", (err, res) => {
-//   console.log(err, res);
-//   pool.end();
-// });
+app.use(`${apiRoute}/pizzas`, pizzaRouter);
 
-app.get("/", (request, response) => {
-  pool.query("SELECT * FROM customer", (error, results) => {
-    if (error) {
-      console.log(error);
-    }
-    response.status(200).json(results);
+app.use("*", (req, res) => {
+  console.log(req);
+  res.status(404).json({
+    status: "error",
+
+    message: "path not found",
   });
 });
 

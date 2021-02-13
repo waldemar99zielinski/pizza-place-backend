@@ -1,9 +1,9 @@
+//enviromental variables
 const dotenv = require("dotenv");
-const Pool = require("pg").Pool;
-
-const app = require("./app");
-
 dotenv.config({ path: "./configuration.env" });
+
+const Pool = require("pg").Pool;
+const app = require("./app");
 
 const port = process.env.PORT || 3000;
 
