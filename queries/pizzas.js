@@ -27,3 +27,26 @@ exports.getOne = async (id) => {
     throw err;
   }
 };
+
+exports.create = async (pizza_code, name, description, price_small, price_big) => {
+  try {
+    const text =
+      "INSERT INTO pizzas (pizza_code, name,description, price_small, price_big) VALUES ($1, $2, $3, $4, $5);";
+
+    const { rows } = await db.query(text, [
+      pizza_code,
+      name,
+      description,
+      price_small,
+      price_big,
+    ]);
+
+    console.log("pizza create: ", rows);
+
+    const data = rows[0];
+    return data;
+  } catch (err) {
+    return err;
+  }
+};
+
