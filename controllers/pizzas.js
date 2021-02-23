@@ -25,7 +25,7 @@ exports.getOne = async (req, res, next) => {
 
     const data = await pizzaQuery.getOne(id);
 
-    console.log("Controller: Pizza ", data)
+    // console.log("Controller: Pizza ", data)
 
     if (data == undefined) {
       res.status(404).json({
@@ -58,18 +58,23 @@ exports.create = async (req, res, next) => {
 
     const data = await pizzaQuery.create(pizza_code, name, description, price_small, price_big);
 
-    if (data === undefined) {
-      res.status(404).json({
-        status: "error",
-        message: "",
-      });
-    } else {
+    console.log(data)
+
+    if (data == undefined) {
       res.status(201).json({
         status: "created",
 
         data,
       });
+    } else {
+      res.status(500).json({
+        status: "error",
+
+        message: data.detail,
+      });
     }
+     
+    
   } catch (err) {
     console.log("[ERROR] ", err);
   }

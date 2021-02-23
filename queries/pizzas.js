@@ -18,6 +18,8 @@ exports.getOne = async (id) => {
     const text =
       "SELECT pizza_code,name,description,price_small,price_big from pizzas where pizza_code = $1";
 
+    
+
     const { rows } = await db.query(text, [id]);
 
     const data = rows[0];
