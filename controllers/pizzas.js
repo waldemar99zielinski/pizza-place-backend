@@ -7,7 +7,7 @@ exports.getAll = async (req, res, next) => {
 
     const data = await pizzaQuery.getAll();
 
-    console.log(data);
+    // console.log(data);
 
     res.status(200).json({
       status: "ok",
@@ -23,9 +23,11 @@ exports.getOne = async (req, res, next) => {
   try {
     const id = req.params.id.toUpperCase();
 
-    const data = pizzaQuery.getOne(id);
+    const data = await pizzaQuery.getOne(id);
 
-    if (data === undefined) {
+    console.log("Controller: Pizza ", data)
+
+    if (data == undefined) {
       res.status(404).json({
         status: "error",
         message: "Pizza not found",

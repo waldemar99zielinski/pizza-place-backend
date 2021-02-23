@@ -22,6 +22,8 @@ exports.getOne = async (id) => {
 
     const data = rows[0];
 
+    // console.log("Query: pizza ", data)
+
     return data;
   } catch (err) {
     throw err;
