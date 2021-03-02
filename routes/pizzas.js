@@ -4,6 +4,6 @@ const pizzaController = require("../controllers/pizzas");
 const router = express.Router();
 
 router.route("/").get(pizzaController.getAll).post(pizzaController.create);
-router.route("/:id").get(pizzaController.getOne);
+router.route("/:id").get(pizzaController.getOne).delete(pizzaController.delete);
 
 module.exports = router;

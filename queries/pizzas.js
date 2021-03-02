@@ -1,56 +1,55 @@
 const db = require("../db");
 
 exports.getAll = async () => {
-  try {
-    const text = "SELECT pizza_code,name,price_small,price_big from pizzas";
+  const text = "SELECT pizza_code,name,price_small,price_big from pizzas";
 
-    const { rows } = await db.query(text, []);
-    console.log(rows[0]);
+  const { rows } = await db.query(text, []);
+  // console.log(rows[0]);
 
-    return rows;
-  } catch (err) {
-    throw err;
-  }
+  return rows;
 };
 
 exports.getOne = async (id) => {
-  try {
-    const text =
-      "SELECT pizza_code,name,description,price_small,price_big from pizzas where pizza_code = $1";
+  const text =
+    "SELECT pizza_code,name,description,price_small,price_big from pizzas where pizza_code = $1";
 
-    
+  const response = await db.query(text, [id]);
 
-    const { rows } = await db.query(text, [id]);
+  console.log("Query: pizza ", response);
 
-    const data = rows[0];
-
-    // console.log("Query: pizza ", data)
-
-    return data;
-  } catch (err) {
-    throw err;
-  }
+  return response;
 };
 
-exports.create = async (pizza_code, name, description, price_small, price_big) => {
-  try {
-    const text =
-      "INSERT INTO pizzas (pizza_code, name,description, price_small, price_big) VALUES ($1, $2, $3, $4, $5);";
+exports.create = async (
+  pizza_code,
+  name,
+  description,
+  price_small,
+  price_big
+) => {
+  const text =
+    "INSERT INTO pizzas (pizza_code, name,description, price_small, price_big) VALUES ($1, $2, $3, $4, $5);";
 
-    const { rows } = await db.query(text, [
-      pizza_code,
-      name,
-      description,
-      price_small,
-      price_big,
-    ]);
+  const response = await db.query(text, [
+    pizza_code,
+    name,
+    description,
+    price_small,
+    price_big,
+  ]);
 
-    console.log("pizza create: ", rows);
+  console.log("Query: pizza: create: response ", response);
 
-    const data = rows[0];
-    return data;
-  } catch (err) {
-    return err;
-  }
+  return response;
 };
 
+exports.delete = async (id) => {
+  const text = "DELETE FROM pizzas where pizza_code = $1";
+  const response = await db.query(text, [id]);
+
+  //const response = rows[0];
+
+  console.log("Query: pizza: delete ", response);
+
+  return response;
+};
