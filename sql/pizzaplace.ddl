@@ -1,5 +1,5 @@
 CREATE TABLE addresses (
-    adress_id         NUMERIC(5,0) NOT NULL,
+    adress_id         SERIAL,
     city              VARCHAR(40) NOT NULL,
     street            VARCHAR(95) NOT NULL,
     street_number     NUMERIC(5,0) NOT NULL,
@@ -10,23 +10,23 @@ CREATE TABLE addresses (
 
 
 CREATE TABLE customers (
-    customer_id   NUMERIC(6,0) NOT NULL,
+    customer_id   SERIAL,
     name          VARCHAR(50) NOT NULL,
     phone_number  CHAR(10) NOT NULL,
-    adress_id     NUMERIC(5,0) NOT NULL REFERENCES addresses ( adress_id ),
+    adress_id     INTEGER NOT NULL REFERENCES addresses ( adress_id ),
     PRIMARY KEY (customer_id)
 );
 
 
 
 CREATE TABLE customer_orders (
-    customer_id  NUMERIC(6,0) NOT NULL REFERENCES customers ( customer_id ),
+    customer_id  INTEGER REFERENCES customers ( customer_id ),
     date         timestamp NOT NULL,
     total_price  NUMERIC(7,0) NOT NULL,
     CHECK (total_price > 0),
     delivery     char(1) NOT NULL,
     payment      char(1) NOT NULL,
-    adress_id    NUMERIC(5,0) NOT NULL REFERENCES addresses ( adress_id ),
+    adress_id    INTEGER REFERENCES addresses ( adress_id ),
     PRIMARY KEY (customer_id,date)
 );
 
@@ -53,9 +53,9 @@ CREATE TABLE pizzas (
 );
 
 CREATE TABLE pizza_orders (
-    customer_id         NUMERIC(6,0) NOT NULL,
-    pizza_order_number  NUMERIC(6,0) NOT NULL,
+    customer_id         INTEGER NOT NULL,
     date                timestamp NOT NULL,
+    pizza_order_number  NUMERIC(6,0) NOT NULL,
     extra_topping_code  VARCHAR(15)  REFERENCES extra_toppings ( extra_topping_code ),
     pizza_code          VARCHAR(15) NOT NULL,
     price                NUMERIC(6,0) NOT NULL,
