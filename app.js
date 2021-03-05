@@ -5,6 +5,8 @@ const helmet = require("helmet");
 //routers
 const pizzaRouter = require("./routes/pizzas");
 const customerRouter = require("./routes/customers");
+const addressRouter = require("./routes/addresses");
+const extraToppingRouter = require("./routes/extraToppings");
 
 const app = express();
 
@@ -19,6 +21,8 @@ const apiRoute = "/api/v1";
 //routes
 app.use(`${apiRoute}/pizzas`, pizzaRouter);
 app.use(`${apiRoute}/customers`, customerRouter);
+app.use(`${apiRoute}/addresses`, addressRouter);
+app.use(`${apiRoute}/extra-toppings`, extraToppingRouter);
 
 app.use("*", (req, res) => {
   console.log(req);

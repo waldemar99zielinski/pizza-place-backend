@@ -3,10 +3,10 @@ const db = require("../db");
 exports.getAll = async () => {
   const text = "SELECT pizza_code,name,price_small,price_big from pizzas";
 
-  const { rows } = await db.query(text, []);
+  const response = await db.query(text, []);
   // console.log(rows[0]);
 
-  return rows;
+  return response;
 };
 
 exports.getOne = async (id) => {
