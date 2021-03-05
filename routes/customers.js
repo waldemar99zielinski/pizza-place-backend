@@ -1,10 +1,15 @@
 const express = require("express");
+const customerController = require("./../controllers/customers");
 
 const router = express.Router();
 
-const passportConfig = require("../authentication/passportConfig");
-
-router.route("/").get(discountController.getAllDiscounts);
-router.route("/:id").get(discountController.getOneDiscount);
+router
+  .route("/")
+  .get(customerController.getAll)
+  .post(customerController.create);
+router
+  .route("/:id")
+  .get(customerController.getOne)
+  .delete(customerController.delete);
 
 module.exports = router;

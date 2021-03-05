@@ -1,10 +1,10 @@
 CREATE TABLE addresses (
-    adress_id         SERIAL,
+    address_id         SERIAL,
     city              VARCHAR(40) NOT NULL,
     street            VARCHAR(95) NOT NULL,
     street_number     NUMERIC(5,0) NOT NULL,
     apartment_number  NUMERIC(5,0),
-    PRIMARY KEY (adress_id)
+    PRIMARY KEY (address_id)
 );
 
 
@@ -13,7 +13,7 @@ CREATE TABLE customers (
     customer_id   SERIAL,
     name          VARCHAR(50) NOT NULL,
     phone_number  CHAR(10) NOT NULL,
-    adress_id     INTEGER NOT NULL REFERENCES addresses ( adress_id ),
+    address_id     INTEGER NOT NULL REFERENCES addresses ( address_id ),
     PRIMARY KEY (customer_id)
 );
 
@@ -26,7 +26,7 @@ CREATE TABLE customer_orders (
     CHECK (total_price > 0),
     delivery     char(1) NOT NULL,
     payment      char(1) NOT NULL,
-    adress_id    INTEGER REFERENCES addresses ( adress_id ),
+    address_id    INTEGER REFERENCES addresses ( address_id ),
     PRIMARY KEY (customer_id,date)
 );
 

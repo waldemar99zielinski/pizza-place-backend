@@ -15,7 +15,7 @@ exports.getOne = async (id) => {
 
   const response = await db.query(text, [id]);
 
-  console.log("Query: pizza ", response);
+  // console.log("Query: pizza ", response);
 
   return response;
 };
@@ -28,7 +28,7 @@ exports.create = async (
   price_big
 ) => {
   const text =
-    "INSERT INTO pizzas (pizza_code, name,description, price_small, price_big) VALUES ($1, $2, $3, $4, $5);";
+    "INSERT INTO pizzas (pizza_code, name,description, price_small, price_big) VALUES ($1, $2, $3, $4, $5) RETURNING *;";
 
   const response = await db.query(text, [
     pizza_code,
@@ -38,7 +38,7 @@ exports.create = async (
     price_big,
   ]);
 
-  console.log("Query: pizza: create: response ", response);
+  // console.log("Query: pizza: create: response ", response);
 
   return response;
 };
@@ -49,7 +49,7 @@ exports.delete = async (id) => {
 
   //const response = rows[0];
 
-  console.log("Query: pizza: delete ", response);
+  // console.log("Query: pizza: delete ", response);
 
   return response;
 };

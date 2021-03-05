@@ -1,11 +1,11 @@
-const pizzaQuery = require("../queries/pizzas");
+const customerQuery = require("../queries/customers");
 const db = require("../db");
 
 exports.getAll = async (req, res, next) => {
   try {
-    // const response = await pizzaQuery.getAllQuery;
+    // const response = await customerQuery.getAllQuery;
 
-    const data = await pizzaQuery.getAll();
+    const data = await customerQuery.getAll();
 
     // console.log(response);
 
@@ -26,16 +26,16 @@ exports.getAll = async (req, res, next) => {
 
 exports.getOne = async (req, res, next) => {
   try {
-    const id = req.params.id.toUpperCase();
+    const id = req.params.id;
 
-    const response = await pizzaQuery.getOne(id);
+    const response = await customerQuery.getOne(id);
 
-    // console.log("Controller: Pizza ", response)
+    // console.log("Controller: customer ", response)
 
     if (response.rowCount === 0) {
       res.status(404).json({
         status: "error",
-        message: `Pizza with code=${id} not found`,
+        message: `Customer with code=${id} not found`,
       });
     } else {
       res.status(200).json({
@@ -48,30 +48,20 @@ exports.getOne = async (req, res, next) => {
     console.log("[ERROR] ", err);
     res.status(500).json({
       status: "error",
-      message: err,
+      message: err.message,
     });
   }
 };
 
 exports.create = async (req, res, next) => {
   try {
-    console.log("Controller: pizza: create: body: ", req.body);
+    console.log("Controller: customer: create: body: ", req.body);
 
-    const pizza_code = req.body.pizza_code.toString();
-    const pizza_code_upper = pizza_code.toUpperCase();
     const name = req.body.name;
-    const description = req.body.description;
-    const price_small = req.body.price_small;
-    const price_big = req.body.price_big;
-    console.log(pizza_code_upper, name, description, price_small, price_big);
+    const phone_number = req.body.phone_number;
+    const address_id = req.body.address_id;
 
-    const response = await pizzaQuery.create(
-      pizza_code_upper,
-      name,
-      description,
-      price_small,
-      price_big
-    );
+    const response = await customerQuery.create(name, phone_number, address_id);
 
     console.log("Controller: pizza: create: response: ", response);
 
@@ -84,36 +74,37 @@ exports.create = async (req, res, next) => {
     res.status(500).json({
       status: "error",
 
-      message: err.detail,
+      message: err.message,
     });
   }
 };
 
 exports.delete = async (req, res, next) => {
   try {
-    const id = req.params.id.toUpperCase();
+    const id = req.params.id;
 
-    const response = await pizzaQuery.delete(id);
+    const response = await customerQuery.delete(id);
 
-    // console.log("Controller: Pizza ", response)
+    // console.log("Controller: customer ", response)
 
     if (response.rowCount === 0) {
       res.status(404).json({
         status: "error",
-        message: `Pizza with code=${id} not found`,
+        message: `customer with code=${id} not found`,
       });
     } else {
       res.status(200).json({
         status: "ok",
 
-        message: `Pizza with code=${id} deleted`,
+        message: `customer with code=${id} deleted`,
+        data: response.rows[0],
       });
     }
   } catch (err) {
     console.log("[ERROR] ", err);
     res.status(500).json({
       status: "error",
-      message: err,
+      message: err.message,
     });
   }
 };
