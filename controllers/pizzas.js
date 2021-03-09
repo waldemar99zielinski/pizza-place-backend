@@ -7,7 +7,7 @@ exports.getAll = async (req, res, next) => {
 
     const response = await pizzaQuery.getAll();
 
-    // console.log(response);
+    console.log(response);
 
     res.status(200).json({
       status: "ok",
@@ -19,7 +19,8 @@ exports.getAll = async (req, res, next) => {
     res.status(500).json({
       status: "error",
 
-      message: err.detail,
+      message: err.message,
+      detail: err.detail,
     });
   }
 };
