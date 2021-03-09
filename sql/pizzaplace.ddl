@@ -13,7 +13,7 @@ CREATE TABLE customers (
     customer_id   SERIAL,
     name          VARCHAR(50) NOT NULL,
     phone_number  CHAR(10) NOT NULL,
-    address_id     INTEGER NOT NULL REFERENCES addresses ( address_id ),
+    address_id     INTEGER REFERENCES addresses ( address_id ),
     PRIMARY KEY (customer_id)
 );
 
@@ -21,13 +21,15 @@ CREATE TABLE customers (
 
 CREATE TABLE customer_orders (
     customer_id  INTEGER REFERENCES customers ( customer_id ),
-    date         timestamp NOT NULL,
+    date         timestamptz NOT NULL,
     total_price  NUMERIC(7,0) NOT NULL,
     CHECK (total_price > 0),
     delivery     char(1) NOT NULL,
     payment      char(1) NOT NULL,
-    address_id    INTEGER REFERENCES addresses ( address_id ),
-    PRIMARY KEY (customer_id,date)
+    PRIMARY KEY (customer_id,date),
+    constraint payment_check CHECK (payment in ('R', 'C')),
+    constraint delivery_check CHECK (delivery in ('Y', 'N'))
+    
 );
 
 
@@ -58,8 +60,13 @@ CREATE TABLE pizza_orders (
     pizza_order_number  NUMERIC(6,0) NOT NULL,
     extra_topping_code  VARCHAR(15)  REFERENCES extra_toppings ( extra_topping_code ),
     pizza_code          VARCHAR(15) NOT NULL,
-    price                NUMERIC(6,0) NOT NULL,
+    size                char(1) NOT NULL,
     PRIMARY KEY (customer_id,date,pizza_order_number),
-    FOREIGN KEY (customer_id,date)  REFERENCES customer_orders ( customer_id,date),
-    FOREIGN KEY (pizza_code )  REFERENCES pizzas ( pizza_code )
+    FOREIGN KEY (customer_id,date)  REFERENCES customer_orders ( customer_id,date) ON DELETE CASCADE,
+    FOREIGN KEY (pizza_code )  REFERENCES pizzas ( pizza_code ),
+    constraint size_check CHECK (size in ('S', 'L'))
 );
+
+COMMENT ON COLUMN customer_orders.delivery IS 'One character input, Y-yes or N-no';
+COMMENT ON COLUMN customer_orders.payment IS 'One character input, R-ready money/cash or C-card';
+COMMENT ON COLUMN pizza_orders.size IS 'One character input, S-small or L-large';
