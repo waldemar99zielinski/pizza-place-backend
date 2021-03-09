@@ -21,7 +21,7 @@ CREATE TABLE customers (
 
 CREATE TABLE customer_orders (
     customer_id  INTEGER REFERENCES customers ( customer_id ),
-    date         timestamp NOT NULL,
+    date         timestamptz NOT NULL,
     total_price  NUMERIC(7,0) NOT NULL,
     CHECK (total_price > 0),
     delivery     char(1) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE pizza_orders (
     pizza_code          VARCHAR(15) NOT NULL,
     size                char(1) NOT NULL,
     PRIMARY KEY (customer_id,date,pizza_order_number),
-    FOREIGN KEY (customer_id,date)  REFERENCES customer_orders ( customer_id,date),
+    FOREIGN KEY (customer_id,date)  REFERENCES customer_orders ( customer_id,date) ON DELETE CASCADE,
     FOREIGN KEY (pizza_code )  REFERENCES pizzas ( pizza_code ),
     constraint size_check CHECK (size in ('S', 'L'))
 );
