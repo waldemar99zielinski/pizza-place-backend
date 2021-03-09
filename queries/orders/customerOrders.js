@@ -1,11 +1,11 @@
 const db = require("../../db");
 
 exports.getAllText =
-  "SELECT customer_id,date, total_price, delivery, payment from customer_orders";
+  "SELECT customer_id,date::timestamptz, total_price, delivery, payment from customer_orders";
 
 exports.getAll = async () => {
   const response = await db.query(this.getAllText, []);
-  // console.log(rows[0]);
+  console.log(response);
 
   return response;
 };
@@ -47,7 +47,7 @@ exports.create = async (customer_id, date, total_price, delivery, payment) => {
 exports.delete = async (customer_id, date) => {
   const text =
     "DELETE FROM customer_orders  where  customer_id = $1 AND date = $2 RETURNING *";
-  const response = await db.query(text, [id, date]);
+  const response = await db.query(text, [customer_id, date]);
 
   //const response = rows[0];
 

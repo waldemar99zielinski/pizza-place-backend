@@ -76,7 +76,7 @@ exports.create = async (req, res, next) => {
     const date = new Date();
     let pizzaOrderCount = 1;
     let totalPrice = 0;
-    console.log("Controller:orders:create: totalprize ", totalPrice);
+    console.log("Controller:orders:create: date ", date.toISOString());
     //transaction
     await client.query("BEGIN");
 
@@ -105,10 +105,8 @@ exports.create = async (req, res, next) => {
       ]);
       //update total order price
       if (p.size == pizzaSize.LARGE) {
-        console.log("LARGE");
         totalPrice += Number(pizza.price_big);
       } else if (p.size == pizzaSize.SMALL) {
-        console.log("SMALL");
         totalPrice += Number(pizza.price_small);
       } else {
         throw new Error("pizza size unknown");
@@ -152,22 +150,23 @@ exports.create = async (req, res, next) => {
 //TODO:
 exports.delete = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const customer_id = req.params.customer_id;
+    const date = req.params.date;
 
-    const response = await addressesQuery.delete(id);
+    const response = await customerOrderQuery.delete(customer_id, date);
 
     // console.log("Controller: addresses ", response)
 
     if (response.rowCount === 0) {
       res.status(404).json({
         status: "error",
-        message: `addresses with code=${id} not found`,
+        message: `customer order with customer_id=${customer_id} and date=${date} not found`,
       });
     } else {
       res.status(200).json({
         status: "ok",
 
-        message: `addresses with code=${id} deleted`,
+        message: `customer order with customer_id=${customer_id} and date=${date} deleted`,
         data: response.rows[0],
       });
     }
