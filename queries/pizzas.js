@@ -1,6 +1,7 @@
 const db = require("../db");
 
-exports.getAllText = "SELECT pizza_code,name,price_small,price_big from pizzas";
+exports.getAllText =
+  "SELECT pizza_code,name,price_small,price_big, image from pizzas";
 
 exports.getAll = async () => {
   const response = await db.query(this.getAllText, []);
