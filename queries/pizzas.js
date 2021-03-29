@@ -1,25 +1,27 @@
 const db = require("../db");
 
-exports.getAll = async () => {
-  const text =
-    "SELECT pizza_code,name,description,price_small,price_big, image from pizzas";
+exports.getAllText = "SELECT pizza_code,name,price_small,price_big from pizzas";
 
-  const response = await db.query(text, []);
-  // console.log(rows[0]);
+exports.getAll = async () => {
+  const response = await db.query(this.getAllText, []);
+  // console.log("Query: pizza: getAll ", response);
 
   return response;
 };
 
-exports.getOne = async (id) => {
-  const text =
-    "SELECT pizza_code,name,description,price_small,price_big from pizzas where pizza_code = $1";
+exports.getOneText =
+  "SELECT pizza_code,name,description,price_small,price_big from pizzas where pizza_code = $1";
 
-  const response = await db.query(text, [id]);
+exports.getOne = async (id) => {
+  const response = await db.query(this.getOneText, [id]);
 
   // console.log("Query: pizza ", response);
 
   return response;
 };
+
+exports.createText =
+  "INSERT INTO pizzas (pizza_code, name,description, price_small, price_big) VALUES ($1, $2, $3, $4, $5) RETURNING *;";
 
 exports.create = async (
   pizza_code,
@@ -28,10 +30,7 @@ exports.create = async (
   price_small,
   price_big
 ) => {
-  const text =
-    "INSERT INTO pizzas (pizza_code, name,description, price_small, price_big) VALUES ($1, $2, $3, $4, $5) RETURNING *;";
-
-  const response = await db.query(text, [
+  const response = await db.query(this.createText, [
     pizza_code,
     name,
     description,
@@ -44,9 +43,10 @@ exports.create = async (
   return response;
 };
 
+exports.deleteText = "DELETE FROM pizzas where pizza_code = $1";
+
 exports.delete = async (id) => {
-  const text = "DELETE FROM pizzas where pizza_code = $1";
-  const response = await db.query(text, [id]);
+  const response = await db.query(this.deleteText, [id]);
 
   //const response = rows[0];
 

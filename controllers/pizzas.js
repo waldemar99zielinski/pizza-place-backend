@@ -19,7 +19,8 @@ exports.getAll = async (req, res, next) => {
     res.status(500).json({
       status: "error",
 
-      message: err.detail,
+      message: err.message,
+      detail: err.detail,
     });
   }
 };
