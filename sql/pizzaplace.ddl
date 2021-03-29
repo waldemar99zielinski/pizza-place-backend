@@ -49,6 +49,7 @@ CREATE TABLE pizzas (
         CHECK (price_small > 0),
     price_big       NUMERIC(6,0) NOT NULL,
         CHECK (price_big > 0),
+    image           VARCHAR(500) NOT NULL,
     PRIMARY KEY (pizza_code)    
 );
 
