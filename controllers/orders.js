@@ -84,13 +84,14 @@ exports.create = async (req, res, next) => {
     //transaction
     await client.query("BEGIN");
 
-    const address = await validateAndReturnAddress(client, req.body);
+    const addressId = await validateAndReturnAddressId(client, req.body);
+
     // console.log("address: ", address);
 
     const customer = await validateAndReturnCustomer(
       client,
       req.body,
-      address.address_id
+      addressId
     );
     // console.log("CUSTOMER: ", customer);
     const date = new Date();
@@ -165,8 +166,7 @@ const validateAndReturnCustomer = async (client, body, address) => {
   return customer;
 };
 
-const validateAndReturnAddress = async (client, body) => {
-  let address = null;
+const validateAndReturnAddressId = async (client, body) => {
   if (body.order.delivery === orderConsts.DELIVERY_YES) {
     const response = await client.query(addressQuery.createText, [
       body.address.city,
@@ -175,9 +175,10 @@ const validateAndReturnAddress = async (client, body) => {
       body.address.apartment_number,
     ]);
     // console.log("ADDRESS: response", response);
-    address = response.rows[0];
+    const address = response.rows[0];
+    return address.address_id;
   }
-  return address;
+  return null;
 };
 
 const createPizzaOrdersAndReturnCustomerOrder = async (

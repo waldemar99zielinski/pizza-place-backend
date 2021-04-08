@@ -42,7 +42,7 @@ exports.getOne = async (req, res, next) => {
       res.status(200).json({
         status: "ok",
 
-        data: response.rows,
+        data: response.rows[0],
       });
     }
   } catch (err) {
@@ -64,6 +64,7 @@ exports.create = async (req, res, next) => {
     const description = req.body.description;
     const price_small = req.body.price_small;
     const price_big = req.body.price_big;
+    const image = req.body.image;
     console.log(pizza_code_upper, name, description, price_small, price_big);
 
     const response = await pizzaQuery.create(
@@ -71,7 +72,8 @@ exports.create = async (req, res, next) => {
       name,
       description,
       price_small,
-      price_big
+      price_big,
+      image
     );
 
     console.log("Controller: pizza: create: response: ", response);

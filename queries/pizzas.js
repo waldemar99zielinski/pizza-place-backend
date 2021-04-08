@@ -11,7 +11,7 @@ exports.getAll = async () => {
 };
 
 exports.getOneText =
-  "SELECT pizza_code,name,description,price_small,price_big from pizzas where pizza_code = $1";
+  "SELECT pizza_code,name,description,price_small,price_big, image from pizzas where pizza_code = $1";
 
 exports.getOne = async (id) => {
   const response = await db.query(this.getOneText, [id]);
@@ -22,14 +22,15 @@ exports.getOne = async (id) => {
 };
 
 exports.createText =
-  "INSERT INTO pizzas (pizza_code, name,description, price_small, price_big) VALUES ($1, $2, $3, $4, $5) RETURNING *;";
+  "INSERT INTO pizzas (pizza_code, name,description, price_small, price_big, image) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;";
 
 exports.create = async (
   pizza_code,
   name,
   description,
   price_small,
-  price_big
+  price_big,
+  image
 ) => {
   const response = await db.query(this.createText, [
     pizza_code,
@@ -37,6 +38,7 @@ exports.create = async (
     description,
     price_small,
     price_big,
+    image,
   ]);
 
   // console.log("Query: pizza: create: response ", response);
