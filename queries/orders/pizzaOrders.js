@@ -1,6 +1,6 @@
 const db = require("../../db");
 exports.getAllText =
-  "SELECT customer_id, date, pizza_order_number, extra_topping_code, pizza_code, price from pizza_orders";
+  "SELECT customer_id, date, pizza_order_number, extra_topping_code, pizza_code, size from pizza_orders";
 exports.getAll = async () => {
   const response = await db.query(this.getAllText, []);
   // console.log(rows[0]);
@@ -8,10 +8,17 @@ exports.getAll = async () => {
   return response;
 };
 
+exports.getAllForOrderText =
+  "SELECT po.pizza_order_number, p.name, et.name, po.size \
+  FROM pizza_orders po\
+  LEFT JOIN pizzas p ON p.pizza_code = po.pizza_code\
+  LEFT JOIN extra_toppings et ON et.extra_topping_code = po.extra_topping_code\
+  WHERE po.customer_id = $1 AND po.date = $2";
+
 exports.getOneText =
-  "SELECT customer_id, date, pizza_order_number, extra_topping_code, pizza_code, price \
+  "SELECT customer_id, date, pizza_order_number, extra_topping_code, pizza_code, size \
     from pizza_orders \
-    where  extra_topping_code = $1 AND date = $2 and pizza_order_number = $3";
+    where customer_id = $1 AND date = $2 AND pizza_order_number = $3";
 
 exports.getOne = async (customer_id, date, pizza_order_number) => {
   const response = await db.query(this.getOneText, [

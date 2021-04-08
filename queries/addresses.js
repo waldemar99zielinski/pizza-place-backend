@@ -22,12 +22,10 @@ exports.getOne = async (id) => {
 
   return response;
 };
-
+exports.createText =
+  "INSERT INTO addresses (city, street, street_number, apartment_number) VALUES ($1, $2, $3, $4) RETURNING *";
 exports.create = async (city, street, street_number, apartment_number) => {
-  const text =
-    "INSERT INTO addresses (city, street, street_number, apartment_number) VALUES ($1, $2, $3, $4) RETURNING *";
-
-  const response = await db.query(text, [
+  const response = await db.query(this.createText, [
     city,
     street,
     street_number,

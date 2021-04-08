@@ -10,11 +10,9 @@ exports.getAll = async () => {
   return response;
 };
 exports.getOneText =
-  "SELECT co.customer_id, co.date, co.total_price,co.delivery, co.payment,\
-   po.pizza_order_number, po.extra_topping_code, p.name,po.size, p.price_small, p.price_big\
+  "SELECT c.name, c.phone_number, co.date, co.total_price,co.delivery, co.payment\
     from customer_orders co \
-    LEFT JOIN pizza_orders po ON po.customer_id = co.customer_id AND po.date = co.date\
-    LEFT JOIN pizzas p ON p.pizza_code = po.pizza_code\
+    LEFT JOIN customers c ON c.customer_id = co.customer_id \
     where co.customer_id = $1 AND co.date = $2";
 //TODO:
 exports.getOne = async (id, date) => {

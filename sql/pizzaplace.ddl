@@ -12,7 +12,7 @@ CREATE TABLE addresses (
 CREATE TABLE customers (
     customer_id   SERIAL,
     name          VARCHAR(50) NOT NULL,
-    phone_number  CHAR(10) NOT NULL,
+    phone_number  CHAR(9) NOT NULL,
     address_id     INTEGER REFERENCES addresses ( address_id ),
     PRIMARY KEY (customer_id)
 );
@@ -57,7 +57,7 @@ CREATE TABLE pizzas (
 
 CREATE TABLE pizza_orders (
     customer_id         INTEGER NOT NULL,
-    date                timestamp NOT NULL,
+    date                timestamptz NOT NULL,
     pizza_order_number  NUMERIC(6,0) NOT NULL,
     extra_topping_code  VARCHAR(15)  REFERENCES extra_toppings ( extra_topping_code ),
     pizza_code          VARCHAR(15) NOT NULL,

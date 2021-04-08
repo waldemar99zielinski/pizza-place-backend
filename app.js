@@ -27,7 +27,7 @@ app.use(`${apiRoute}/extra-toppings`, extraToppingRouter);
 app.use(`${apiRoute}/orders`, ordersRouter);
 
 app.use("*", (req, res) => {
-  console.log(req);
+  // console.log(req);
   res.status(404).json({
     status: "error",
 
